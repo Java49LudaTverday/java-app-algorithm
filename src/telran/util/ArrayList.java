@@ -47,15 +47,15 @@ public class ArrayList<T> implements List<T> {
 			size++;
 		}
 
-	}
+	}	
 
 	@Override
 	public T remove(int index) {
 		T removedObj = null;
 		if (index > -1 && index < size) {
 			removedObj = array[index];
-			System.arraycopy(array, index + 1, array, index, size - index);
 			size--;
+			System.arraycopy(array, index + 1, array, index, size - index);
 		}
 		return removedObj;
 	}
@@ -68,5 +68,54 @@ public class ArrayList<T> implements List<T> {
 		}
 		return object;
 	}
+	
+	@Override
+	public boolean remove(T pattern) {
+		int index = indexOf(pattern);
+		T removedObj = remove(index);
+		return isEqual(removedObj, pattern);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public T[] toArray(T[] array) {
+		T[] res = array;
+		if (array.length < size) {
+			res =  (T[])new Object[size];
+		}
+		System.arraycopy(this.array, 0, res, 0, size);
+		return res;
+	}
 
+	@Override
+	public int indexOf(T pattern) {
+		int res = -1;
+		int index = 0;
+		while (index < size && res == -1) {
+			if (isEqual(array[index], pattern)) {
+				res = index;
+			}
+			index++;
+		}
+		return res;
+	}
+
+	@Override
+	public int lastIndexOf(T pattern) {
+		int res = -1;
+		int index = size;
+		while (--index > 0 && res == -1) {
+			if (isEqual(array[index], pattern)) {
+				res = index;
+			}
+			// index--;
+		}
+
+		return res;
+	}
+
+	private boolean isEqual(T object, T pattern) {
+
+		return pattern == null ? object == pattern : pattern.equals(object);
+	}
 }
