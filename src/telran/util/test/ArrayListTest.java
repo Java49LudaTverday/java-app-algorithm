@@ -93,6 +93,7 @@ class ArrayListTest {
 		runTest(expectedNo7_10_30);
 		Integer no1 = 1;
 		assertFalse(list.remove(no1));
+		assertFalse(list.remove(null));
 	}
 	
 	@Test
@@ -119,7 +120,57 @@ class ArrayListTest {
 		assertArrayEquals(expectedList, list.toArray(null));
 				
 	}
+	
+	@Test
+	void testSort() {
+		Integer expected[] = {-20, 7, 10, 30, 50, 100};
+		list.sort();
+		assertArrayEquals(expected, list.toArray(new Integer[0]));
+	}
 
+	@Test
+	void testSortPerson() {
+		List<Person> persons = new ArrayList<>();
+		Person p1 = new Person(123, 25, "Vasia");
+		Person p2 = new Person(124, 20, "Asaf");
+		Person p3 = new Person(120, 50, "Arkady");
+		persons.add(p1);
+		persons.add(p2);
+		persons.add(p3);
+		Person expected[]= {p3,p1,p2};
+		persons.sort();
+		assertArrayEquals(expected, persons.toArray(new Person[0]));
+		
+		
+	}
+	
+	@Test
+	void testSortPersonsByAge() {
+		List<Person> persons = new ArrayList<>();
+		Person p1 = new Person(123, 25, "Vasia");
+		Person p2 = new Person(124, 20, "Asaf");
+		Person p3 = new Person(120, 50, "Arkady");
+		persons.add(p1);
+		persons.add(p2);
+		persons.add(p3);
+		Person expected[]= {p2,p1,p3};
+		persons.sort(new PersonsAgeComporator());
+		assertArrayEquals(expected, persons.toArray(new Person[0]));
+	}
+	
+	// Integer[] numbers = {10, -20, 7, 50, 100, 30, 17, -100, 19};
+	@Test 
+	void testSortEvenOdd () {
+		list.add(-17);
+		list.add(-21);
+		list.add(-100);
+		list.add(19);		
+		list.sort(new EvenOddComparator());
+		list.toMyString();
+		Integer expected[] = {-100, -20, 10, 30, 50, 100,19, 7, -17,-21};
+		assertArrayEquals(expected, list.toArray(new Integer[0]));
+		
+	}
 	private void runTest(Integer[] expected) {
 		int size = list.size();
 		Integer[] actual = new Integer[expected.length];

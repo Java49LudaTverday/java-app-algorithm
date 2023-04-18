@@ -1,6 +1,7 @@
 package telran.util;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPASITY = 16;
@@ -47,7 +48,7 @@ public class ArrayList<T> implements List<T> {
 			size++;
 		}
 
-	}	
+	}
 
 	@Override
 	public T remove(int index) {
@@ -68,22 +69,26 @@ public class ArrayList<T> implements List<T> {
 		}
 		return object;
 	}
-	
+
 	@Override
 	public boolean remove(T pattern) {
 		int index = indexOf(pattern);
-		T removedObj = remove(index);
-		return isEqual(removedObj, pattern);
+		// T removedObj = remove(index);
+		return index > -1 ? isEqual(remove(index), pattern) : false;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public T[] toArray(T[] array) {
 		T[] res = array;
 		if (array.length < size) {
-			res =  (T[])new Object[size];
+			// res = (T[]) new Object[size];
+			res = Arrays.copyOf(res, size);
 		}
 		System.arraycopy(this.array, 0, res, 0, size);
+		if (res.length > size) {
+			res[size] = null;
+		}
 		return res;
 	}
 
@@ -117,5 +122,33 @@ public class ArrayList<T> implements List<T> {
 	private boolean isEqual(T object, T pattern) {
 
 		return pattern == null ? object == pattern : pattern.equals(object);
+	}
+
+	@Override
+	public void sort() {
+		Arrays.sort(array, 0, size);
+	}
+
+	@Override
+	public void sort(Comparator<T> comp) {
+		boolean flSort = true;
+		for (int i = 0; i < size && flSort ; i++) {
+			flSort = false;
+			for (int y = 0; y < size-i-1; y++) {
+				if (comp.compare(array[y], array[y + 1]) > 0) {
+					T obj = array[y];
+					array[y] = array[y + 1];
+					array[y + 1] = obj;
+					flSort = true;
+				}
+			}
+		}
+		//Arrays.sort(array, 0, size, comp);
+	}
+	
+	public void toMyString() {		
+		for(int i = 0; i< size; i++) {
+			System.out.print(array[i]+" ");
+		}
 	}
 }
