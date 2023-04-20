@@ -179,9 +179,27 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		boolean res = false;
-		for (int i = size - 1; i > -1; i--) {
-			res = predicate.test(array[i]) ? remove(array[i]) : res;
+		sort((T a, T b) -> {
+			int resSort = 0;
+			boolean predA = predicate.test((T) a);
+			boolean predB = predicate.test((T) b);
+			if (predA != predB) {
+				resSort = predA == true ? 1 : -1;
+			}
+			return resSort;
+		});
+		int index = indexOf(predicate);
+		if (index > -1) {
+			System.arraycopy(array, 0, array, 0, index);
+			size = index;
+			res = true;
 		}
+
 		return res;
 	}
+
 }
+
+//for (int i = size - 1; i > -1; i--) {
+//res = predicate.test(array[i]) ? remove(array[i]) : res;
+//}

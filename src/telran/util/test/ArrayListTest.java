@@ -197,6 +197,7 @@ class ArrayListTest {
 	}
 
 	@Test
+	// Integer[] numbers = { 10, -20, 7, 50, 100, 30};
 	void testRemoveIfAll() {
 		assertTrue(list.removeIf(a -> true));
 		assertEquals(0, list.size());
@@ -205,10 +206,10 @@ class ArrayListTest {
 	@Test
 	void testRemoveIf() {
 		assertFalse(list.removeIf(a -> a == null));
-		assertTrue(list.removeIf(a -> (a*3)%2 == 0));
-		assertEquals(1, list.size());
-		assertTrue(list.removeIf(ArrayListTest::predicateOddRemove));
-		assertEquals(0, list.size());
+		assertTrue(list.removeIf(a -> (a*3)%2 != 0));
+		assertEquals(5, list.size());
+		assertFalse(list.removeIf(ArrayListTest::predicateOddRemove));
+		assertEquals(5, list.size());
 	}
 
 	private void runTest(Integer[] expected) {
