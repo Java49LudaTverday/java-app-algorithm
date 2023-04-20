@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPASITY = 16;
@@ -77,12 +78,10 @@ public class ArrayList<T> implements List<T> {
 		return index > -1 ? isEqual(remove(index), pattern) : false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T[] toArray(T[] array) {
 		T[] res = array;
 		if (array.length < size) {
-			// res = (T[]) new Object[size];
 			res = Arrays.copyOf(res, size);
 		}
 		System.arraycopy(this.array, 0, res, 0, size);
@@ -113,7 +112,6 @@ public class ArrayList<T> implements List<T> {
 			if (isEqual(array[index], pattern)) {
 				res = index;
 			}
-			// index--;
 		}
 
 		return res;
@@ -132,9 +130,9 @@ public class ArrayList<T> implements List<T> {
 	@Override
 	public void sort(Comparator<T> comp) {
 		boolean flSort = true;
-		for (int i = 0; i < size && flSort ; i++) {
+		for (int i = 0; i < size && flSort; i++) {
 			flSort = false;
-			for (int y = 0; y < size-i-1; y++) {
+			for (int y = 0; y < size - i - 1; y++) {
 				if (comp.compare(array[y], array[y + 1]) > 0) {
 					T obj = array[y];
 					array[y] = array[y + 1];
@@ -143,12 +141,47 @@ public class ArrayList<T> implements List<T> {
 				}
 			}
 		}
-		//Arrays.sort(array, 0, size, comp);
+		// Arrays.sort(array, 0, size, comp);
 	}
-	
-	public void toMyString() {		
-		for(int i = 0; i< size; i++) {
-			System.out.print(array[i]+" ");
+
+	public void toMyString() {
+		for (int i = 0; i < size; i++) {
+			System.out.print(array[i] + " ");
 		}
+	}
+
+	@Override
+	public int indexOf(Predicate<T> predicate) {
+		int res = -1;
+		int index = 0;
+		while (index < size && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+			index++;
+		}
+		return res;
+	}
+
+	@Override
+	public int lastIndexOf(Predicate<T> predicate) {
+		int res = -1;
+		int index = size;
+		while (--index > 0 && res == -1) {
+			if (predicate.test(array[index])) {
+				res = index;
+			}
+		}
+
+		return res;
+	}
+
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		boolean res = false;
+		for (int i = size - 1; i > -1; i--) {
+			res = predicate.test(array[i]) ? remove(array[i]) : res;
+		}
+		return res;
 	}
 }
