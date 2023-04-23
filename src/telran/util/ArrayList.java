@@ -190,7 +190,8 @@ public class ArrayList<T> implements List<T> {
 		});
 		int index = indexOf(predicate);
 		if (index > -1) {
-			System.arraycopy(array, 0, array, 0, index);
+			//don`t need 
+			//System.arraycopy(array, 0, array, 0, index);
 			size = index;
 			res = true;
 		}
