@@ -24,13 +24,21 @@ public class InitialAlgorithm {
 		while (index < array.length && !res) {
 			int indexHelper = array[index];
 			if (indexHelper <= sum) {
-					helper[indexHelper]++;
-					if (helper[sum - indexHelper] > 0 && sum - indexHelper != indexHelper) {
-						res = true;
-						//if sum even and an array haves two numbers == sum/2
-					} else if (helper[sum - indexHelper] > 1 && sum - indexHelper == indexHelper) {
-						res = true;
-					}
+				//Solution 1:
+//					helper[indexHelper]++;
+//					if (helper[sum - indexHelper] > 0 && sum - indexHelper != indexHelper) {
+//						res = true;
+//						//if sum even and an array haves two numbers == sum/2
+//					} else if (helper[sum - indexHelper] > 1 && sum - indexHelper == indexHelper) {
+//						res = true;
+//					}
+				//Solution 2:
+				if (helper[indexHelper] == 0) {
+					helper[sum - indexHelper] = 1;
+				} else {
+					res = true;
+				}
+				
 			}
 			index++;
 		}
@@ -66,7 +74,7 @@ public class InitialAlgorithm {
 			flUnSort = false;
 			n--;
 			for (int i = 0; i < n; i++) {
-				if (array[i] > array[i+1]) {
+				if (array[i] > array[i + 1]) {
 					short number = array[i];
 					array[i] = array[i + 1];
 					array[i + 1] = number;
