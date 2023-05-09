@@ -43,38 +43,39 @@ public class ArrayList<T> implements List<T> {
 		if (size == array.length) {
 			reallocate();
 		}
-		if (index > -1 && index <= size) {
+		if(index < 0 || index > size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 			System.arraycopy(array, index, array, index + 1, size - index);
 			array[index] = obj;
 			size++;
-		}
-
 	}
 
 	@Override
 	public T remove(int index) {
 		T removedObj = null;
-		if (index > -1 && index < size) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
 			removedObj = array[index];
 			size--;
 			System.arraycopy(array, index + 1, array, index, size - index);
-		}
+		
 		return removedObj;
 	}
 
 	@Override
 	public T get(int index) {
-		T object = null;
-		if (index > -1 && index < size) {
-			object = array[index];
+		if(index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
 		}
-		return object;
+		T res = array[index];
+		return res;
 	}
 
 	@Override
 	public boolean remove(T pattern) {
 		int index = indexOf(pattern);
-		// T removedObj = remove(index);
 		return index > -1 ? isEqual(remove(index), pattern) : false;
 	}
 
@@ -141,7 +142,6 @@ public class ArrayList<T> implements List<T> {
 				}
 			}
 		}
-		// Arrays.sort(array, 0, size, comp);
 	}
 
 	public void toMyString() {
@@ -190,8 +190,6 @@ public class ArrayList<T> implements List<T> {
 		});
 		int index = indexOf(predicate);
 		if (index > -1) {
-			//don`t need 
-			//System.arraycopy(array, 0, array, 0, index);
 			size = index;
 			res = true;
 		}

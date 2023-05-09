@@ -39,6 +39,8 @@ class ArrayListTest {
 		runTest(expected0_500_3_700);
 		list.add(8, 300);
 		runTest(expected0_500_3_700_8_300);
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(-1, 1));
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(list.size() + 1, 1));
 
 	}
 
@@ -53,12 +55,15 @@ class ArrayListTest {
 		runTest(expectedNo10_50);
 		assertEquals(30, list.remove(3));
 		runTest(expectedNo10_50_30);
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.remove(-1));
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.remove(list.size()));
 
 	}
 
 	@Test
 	void testGetIndex() {
 		assertEquals(10, list.get(0));
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.get(list.size()));
 	}
 
 	@Test
@@ -206,7 +211,7 @@ class ArrayListTest {
 	@Test
 	void testRemoveIf() {
 		assertFalse(list.removeIf(a -> a == null));
-		assertTrue(list.removeIf(a -> (a*3)%2 != 0));
+		assertTrue(list.removeIf(a -> (a * 3) % 2 != 0));
 		assertEquals(5, list.size());
 		assertFalse(list.removeIf(ArrayListTest::predicateOddRemove));
 		assertEquals(5, list.size());
@@ -230,9 +235,10 @@ class ArrayListTest {
 		}
 		return res;
 	}
-	static private boolean predicateOddRemove (Integer a) {
-		 
-		return Math.abs(a)%2 == 1 ? true : false;
+
+	static private boolean predicateOddRemove(Integer a) {
+
+		return Math.abs(a) % 2 == 1 ? true : false;
 	}
 
 }
