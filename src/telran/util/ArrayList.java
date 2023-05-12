@@ -167,7 +167,7 @@ public class ArrayList<T> implements List<T> {
 	public int lastIndexOf(Predicate<T> predicate) {
 		int res = -1;
 		int index = size;
-		while (--index > 0 && res == -1) {
+		while (--index >= 0 && res == -1) {
 			if (predicate.test(array[index])) {
 				res = index;
 			}
@@ -178,23 +178,14 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		boolean res = false;
-		sort((T a, T b) -> {
-			int resSort = 0;
-			boolean predA = predicate.test((T) a);
-			boolean predB = predicate.test((T) b);
-			if (predA != predB) {
-				resSort = predA == true ? 1 : -1;
-			}
-			return resSort;
-		});
-		int index = indexOf(predicate);
-		if (index > -1) {
-			size = index;
-			res = true;
+		int oldSize = size;
+		for(int i = size - 1; i >= 0; i--) {
+			if(predicate.test(array[i])) {
+				remove(i);
+			} 
 		}
+		return oldSize > size;
 
-		return res;
 	}
 
 }
