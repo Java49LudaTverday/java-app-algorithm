@@ -26,7 +26,6 @@ public abstract class CollectionTest {
 	}
 
 	protected abstract Collection<Integer> getCollection();
-	protected abstract void runTest(Integer[] expected);
 
 	@Test
 	void testAdd() {
@@ -91,6 +90,19 @@ public abstract class CollectionTest {
 
 	static private boolean predicateOddRemove(Integer a) {
 		return Math.abs(a) % 2 == 1 ? true : false;
+	}
+	public static int evenOddCompare(Integer a, Integer b) {
+		int res = Math.abs(a % 2) - Math.abs(b % 2);
+		if (res == 0) {
+			res = a % 2 == 0 ? a - b : b - a;
+		}
+		return res;
+	}
+	
+	protected void runTest(Integer[] expected) {
+		Integer[] actual = new Integer[expected.length];
+		actual = collection.toArray(actual);
+		assertArrayEquals(expected, actual);
 	}
 
 }

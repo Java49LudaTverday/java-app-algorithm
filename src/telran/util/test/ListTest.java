@@ -115,7 +115,7 @@ abstract class ListTest extends CollectionTest{
 		list.add(-21);
 		list.add(-100);
 		list.add(19);
-		list.sort(ListTest::evenOddCompare);
+		list.sort(CollectionTest::evenOddCompare);
 		list.toMyString();
 		Integer expected[] = { -100, -20, 10, 30, 50, 100, 19, 7, -17, -21 };
 		assertArrayEquals(expected, list.toArray(new Integer[0]));
@@ -134,24 +134,5 @@ abstract class ListTest extends CollectionTest{
 		assertEquals(5, list.lastIndexOf(a -> a < 35));
 		assertEquals(-1, list.lastIndexOf(a -> a * 2 == 0));
 	}
-
-	@Override
-	protected void runTest(Integer[] expected) {
-		int size = list.size();
-		Integer[] actual = new Integer[expected.length];
-
-		for (int i = 0; i < size; i++) {
-			actual[i] = list.get(i);
-		}
-		assertArrayEquals(expected, actual);
-
-	}
-
-	static private int evenOddCompare(Integer a, Integer b) {
-		int res = Math.abs(a % 2) - Math.abs(b % 2);
-		if (res == 0) {
-			res = a % 2 == 0 ? a - b : b - a;
-		}
-		return res;
-	}
+	
 }
