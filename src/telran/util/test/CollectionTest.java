@@ -1,15 +1,15 @@
 package telran.util.test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Iterator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import telran.util.Collection;
+import java.util.NoSuchElementException;
 
 public abstract class CollectionTest {
     // move tests of methods from interface collection
@@ -87,6 +87,17 @@ public abstract class CollectionTest {
 		assertFalse(collection.removeIf(CollectionTest::predicateOddRemove));
 		assertEquals(5, collection.size());
 	}
+	@Test 
+	void testIterator() {
+		Iterator<Integer> it1 = collection.iterator();
+		Iterator<Integer> it2 = collection.iterator();
+		for(int i = 0; i < collection.size(); i++) {
+			it2.next();
+		}
+		assertTrue(collection.contains(it1.next()));
+		assertThrowsExactly(NoSuchElementException.class,()-> it2.next());
+		
+	}
 
 	static private boolean predicateOddRemove(Integer a) {
 		return Math.abs(a) % 2 == 1 ? true : false;
@@ -100,9 +111,9 @@ public abstract class CollectionTest {
 	}
 	
 	protected void runTest(Integer[] expected) {
-		Integer[] actual = new Integer[expected.length];
-		actual = collection.toArray(actual);
+		Integer[] actual = collection.toArray(new Integer[0]);
 		assertArrayEquals(expected, actual);
 	}
+	
 
 }

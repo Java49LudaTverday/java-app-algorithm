@@ -2,12 +2,31 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPASITY = 16;
 	private T[] array;
 	private int size;
+	private class ArrayListIterator implements Iterator<T>{
+		int index = 0;
+
+		@Override
+		public boolean hasNext() {
+			return index < size;
+		}
+
+		@Override
+		public T next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return array[index++];
+		}
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public ArrayList(int capacity) {
@@ -74,46 +93,6 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	@Override
-	public boolean remove(T pattern) {
-		int index = indexOf(pattern);
-		return index > -1 ? isEqual(remove(index), pattern) : false;
-	}
-
-	@Override
-	public T[] toArray(T[] array) {
-		T[] res = array;
-		if (array.length < size) {
-			res = Arrays.copyOf(res, size);
-		}
-		System.arraycopy(this.array, 0, res, 0, size);
-		if (res.length > size) {
-			res[size] = null;
-		}
-		return res;
-	}
-
-	@Override
-	public int indexOf(T pattern) {
-		
-		return indexOf(obj -> isEqual(obj, pattern));
-	}
-
-	@Override
-	public int lastIndexOf(T pattern) {
-		return lastIndexOf(obj -> isEqual(obj, pattern));
-	}
-
-	private boolean isEqual(T object, T pattern) {
-
-		return pattern == null ? object == pattern : pattern.equals(object);
-	}
-
-	@Override
-	public void sort() {
-		Arrays.sort(array, 0, size);
-	}
-
-	@Override
 	public void sort(Comparator<T> comp) {
 		boolean flSort = true;
 		for (int i = 0; i < size && flSort; i++) {
@@ -173,8 +152,10 @@ public class ArrayList<T> implements List<T> {
 
 	}
 
+	@Override
+	public Iterator<T> iterator() {
+		return new ArrayListIterator();
+	}
+
 }
 
-//for (int i = size - 1; i > -1; i--) {
-//res = predicate.test(array[i]) ? remove(array[i]) : res;
-//}
