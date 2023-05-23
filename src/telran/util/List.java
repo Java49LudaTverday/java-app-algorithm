@@ -23,10 +23,10 @@ public interface List<T> extends Collection<T> {
 		return res;
 	}
 
-	@Override
-	default boolean contains(T pattern) {
-		return indexOf(pattern) > -1;
-	}
+//	@Override
+//	default boolean contains(T pattern) {
+//		return indexOf(pattern) > -1;
+//	}
 	
 	default int indexOf(T pattern) {		
 		return indexOf(obj -> isEqual(obj, pattern));

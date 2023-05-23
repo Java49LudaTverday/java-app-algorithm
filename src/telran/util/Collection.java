@@ -9,8 +9,28 @@ public interface Collection<T> extends Iterable<T> {
 	int size();
 	boolean remove(T pattern);
 	void toMyString();
-	boolean removeIf(Predicate<T> predicate);
-	boolean contains(T pattern);
+	default boolean removeIf(Predicate<T> predicate) {
+		int oldSize = size();
+		Iterator<T> it = iterator();
+		while(it.hasNext()) {
+			T obj = it.next();
+			if(predicate.test(obj)) {
+				it.remove();
+			}
+		}
+		return oldSize > size();
+	};
+	
+ default boolean contains(T pattern) {
+		boolean contains = false;
+		Iterator<T> itr = iterator();
+		while(itr.hasNext() && !contains) {
+			if(isEqual(pattern, itr.next())) {
+				contains = true;
+			}				
+		}
+		return contains;
+	};
 	
 	default public T[] toArray(T[] array) {
 		int size = size();
@@ -30,6 +50,9 @@ public interface Collection<T> extends Iterable<T> {
 	default boolean isEqual(T object, T pattern) {
 
 		return pattern == null ? object == pattern : pattern.equals(object);
+	}
+	default void clear() {
+		removeIf(element -> true);
 	}
 
 }

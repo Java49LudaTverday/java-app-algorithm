@@ -134,5 +134,15 @@ abstract class ListTest extends CollectionTest{
 		assertEquals(5, list.lastIndexOf(a -> a < 35));
 		assertEquals(-1, list.lastIndexOf(a -> a * 2 == 0));
 	}
+	 
+	@Test
+	void testClearPerformance() {
+		List<Integer> bigList = getList();
+		for(int i = 0; i < 1_000_000; i++) {
+			bigList.add(i);			
+		}
+		bigList.clear();
+		
+	}
 	
 }

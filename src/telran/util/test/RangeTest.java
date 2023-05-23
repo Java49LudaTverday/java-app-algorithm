@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import telran.util.Range;
@@ -28,5 +29,34 @@ Range range = new Range(10, 14);
 		assertEquals(10, it1.next());
 		assertThrowsExactly(NoSuchElementException.class,()-> it2.next());
 	}
+	
+	@Test
+	void iteratorRemoveTest() {
+		Iterator<Integer> it1 = range.iterator();
+		Integer[] expectedFirst = {11,12,13};
+		Integer[] expectedLast = {11,12};
+		assertThrowsExactly(IllegalStateException.class, () -> it1.remove());
+		it1.next();
+		it1.remove();
+		assertArrayEquals(expectedFirst, range.toArray());
+		assertThrowsExactly(IllegalStateException.class, () -> it1.remove());
+		while(it1.hasNext()) {
+			it1.next();
+		}
+		it1.remove();
+		assertArrayEquals(expectedLast, range.toArray());
+	}	
 
+	@Test
+	void removeIfRangeTest() {
+		Range range1 = new Range(1, 4);
+		range1.removeIf(num -> num % 2 != 0);
+		assertArrayEquals(new Integer[] { 2 }, range1.toArray());
+	}
+	@Test
+	void removeIfAllTest() {
+		Range range1 = new Range(0, 5);
+		assertTrue(range1.removeIf(num -> true));
+		assertEquals(0, range1.toArray().length);
+	}
 }
