@@ -160,16 +160,13 @@ public class ArrayList<T> implements List<T> {
 			if(predicate.test(array[indexCurrent])) {
 				size--;
 			} else {
-				array[indexRemove] = array[indexCurrent];
-				indexRemove++;
+				array[indexRemove++] = array[indexCurrent];
 			}
 		}
-
-		for(int i = 0; i < oldSize - size; i++) {
-			array[oldSize - i] = null;
+		for(int i = size; i < oldSize; i++) {
+			array[i] = null;
 		}
 		return oldSize > size;
-
 	}
 
 	@Override
