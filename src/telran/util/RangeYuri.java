@@ -6,7 +6,7 @@ import java.util.function.Predicate;
 public class RangeYuri implements Iterable<Integer>{
 	private int min;
 	private int max;
-	private List<Integer> removedList;
+	private Collection<Integer> removedList;
 	
 	public RangeYuri(int min, int max) {
 		if (min >= max) {
@@ -14,7 +14,7 @@ public class RangeYuri implements Iterable<Integer>{
 		}
 		this.min = min;
 		this.max = max;
-		removedList = new LinkedList<>();
+		removedList = new HashSet<>();
 	}
 	private class RangeIterator implements Iterator<Integer> {
 		Integer current = getCurrent(min - 1);

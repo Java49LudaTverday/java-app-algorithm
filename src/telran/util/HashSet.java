@@ -10,65 +10,62 @@ public class HashSet<T> implements Set<T> {
 	private int size;
 	
 	private class HashSetIterator implements Iterator<T> {
-		int indexHashTable = -1;
-		int indexList = 0;
-		LinkedList<T> currentList = getCurrentList();
-		LinkedList<T> prevList = null;
-		T currentObj = null;
+		Integer currentIteratorIndex;
+		Iterator<T> currentIterator;
+		Iterator<T> prevIterator;
 		boolean flNext = false;
-		int currentInd = 0;
-
+		HashSetIterator() {
+			initialState();
+		}
+		private void initialState() {
+			currentIteratorIndex = getCurrentIteratorIndex(-1);
+			if(currentIteratorIndex > -1) {
+				currentIterator = hashTable[currentIteratorIndex].iterator();
+			}
+		}
+		private int getCurrentIteratorIndex(int currentIndex) {
+			currentIndex++;
+			while(currentIndex < hashTable.length && 
+					(hashTable[currentIndex] == null || hashTable[currentIndex].size() == 0)) {
+				currentIndex++;
+			}
+			return currentIndex < hashTable.length ? currentIndex : -1;
+		}
 		@Override
 		public boolean hasNext() {
 			
-			return currentList != null && indexHashTable < hashTable.length;
-		}		
+			return currentIteratorIndex >= 0;
+		}
 
 		@Override
 		public T next() {
 			if(!hasNext()) {
 				throw new NoSuchElementException();
 			}
-			prevList = currentList;
-			currentInd = indexHashTable;
-			currentObj = getCurrentObj(currentList);
+			T res = currentIterator.next();
+			prevIterator = currentIterator;
+			updateState();
 			flNext = true;
-			return currentObj;			
+			return res;
 		}
-		
+		private void updateState() {
+			if(!currentIterator.hasNext()) {
+				currentIteratorIndex =
+						getCurrentIteratorIndex(currentIteratorIndex);
+				if(currentIteratorIndex >= 0) {
+					currentIterator = hashTable[currentIteratorIndex].iterator();
+				}
+			}			
+		}
 		@Override
 		public void remove() {
 			if(!flNext) {
 				throw new IllegalStateException();
-			}	
-		    prevList.remove(currentObj);   
-			if(prevList.size() == 0) {
-				hashTable[currentInd] = null;
-			    indexList = 0;
-			} else {
-				indexList--;
-			}			
+			}
+			prevIterator.remove();
 			size--;
 			flNext = false;
-		}
-		
-		private LinkedList<T> getCurrentList() {
-			indexHashTable++;
-			while(indexHashTable < hashTable.length && hashTable[indexHashTable] == null  ) {
-				indexHashTable++;
-			}
-			return indexHashTable < hashTable.length ? hashTable[indexHashTable]: null;
-		}
-		
-		private T getCurrentObj(LinkedList<T> list) {
-			T obj = list.get(indexList++);
-			if(indexList == list.size()) {
-				indexList = 0;
-				currentList = getCurrentList();
-			}
-			return obj;
-		}
-		
+		}		
 	}
 	@SuppressWarnings("unchecked")
 	public HashSet(int hashTableSize) {
@@ -176,3 +173,62 @@ public class HashSet<T> implements Set<T> {
 	}
 
 }
+
+//int indexHashTable = -1;
+//int indexList = 0;
+//LinkedList<T> currentList = getCurrentList();
+//LinkedList<T> prevList = null;
+//T currentObj = null;
+//boolean flNext = false;
+//int currentInd = 0;
+//
+//@Override
+//public boolean hasNext() {
+//	
+//	return currentList != null && indexHashTable < hashTable.length;
+//}		
+//
+//@Override
+//public T next() {
+//	if(!hasNext()) {
+//		throw new NoSuchElementException();
+//	}
+//	prevList = currentList;
+//	currentInd = indexHashTable;
+//	currentObj = getCurrentObj(currentList);
+//	flNext = true;
+//	return currentObj;			
+//}
+//
+//@Override
+//public void remove() {
+//	if(!flNext) {
+//		throw new IllegalStateException();
+//	}	
+//    prevList.remove(currentObj);   
+//	if(prevList.size() == 0) {
+//		hashTable[currentInd] = null;
+//	    indexList = 0;
+//	} else {
+//		indexList--;
+//	}			
+//	size--;
+//	flNext = false;
+//}
+//
+//private LinkedList<T> getCurrentList() {
+//	indexHashTable++;
+//	while(indexHashTable < hashTable.length && hashTable[indexHashTable] == null  ) {
+//		indexHashTable++;
+//	}
+//	return indexHashTable < hashTable.length ? hashTable[indexHashTable]: null;
+//}
+//
+//private T getCurrentObj(LinkedList<T> list) {
+//	T obj = list.get(indexList++);
+//	if(indexList == list.size()) {
+//		indexList = 0;
+//		currentList = getCurrentList();
+//	}
+//	return obj;
+//}
