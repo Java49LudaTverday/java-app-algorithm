@@ -22,6 +22,7 @@ public abstract class CollectionTest {
 		collection = getCollection();
 		for (int i = 0; i < numbers.length; i++) {
 			collection.add(numbers[i]);
+			System.out.println(numbers[i]);
 		}
 	}
 

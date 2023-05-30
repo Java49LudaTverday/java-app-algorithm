@@ -17,7 +17,6 @@ public abstract class SetTest extends CollectionTest {
    @Override
    @Test
 	void testAdd() {
-	   System.out.println(collection.contains(numbers[0]));
 		assertFalse(collection.add(numbers[0]));
 		assertEquals(numbers.length, collection.size());
 	}
