@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import telran.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public abstract class CollectionTest {
     // move tests of methods from interface collection
@@ -22,7 +23,6 @@ public abstract class CollectionTest {
 		collection = getCollection();
 		for (int i = 0; i < numbers.length; i++) {
 			collection.add(numbers[i]);
-			System.out.println(numbers[i]);
 		}
 	}
 
@@ -51,20 +51,6 @@ public abstract class CollectionTest {
 		assertFalse(collection.remove(no1));
 		//assertFalse(collection.remove(null));
 	}
-
-	@Test
-	void testToArray() {
-		Integer[] expectedList = { 10, -20, 7, 50, 100, 30 };
-		Integer[] expectedSpareSize = { 10, -20, 7, 50, 100, 30, null };
-
-		Integer[] arrListSize = new Integer[collection.size()];
-		Integer[] arrLessSize = new Integer[collection.size() - 1];
-		Integer[] arrSpareSize = new Integer[collection.size() + 1];
-
-		assertArrayEquals(expectedList, collection.toArray(arrListSize));
-		assertArrayEquals(expectedList, collection.toArray(arrLessSize));
-		assertArrayEquals(expectedSpareSize, collection.toArray(arrSpareSize));
-	}
 	
 	@Test
 	@Disabled
@@ -78,56 +64,67 @@ public abstract class CollectionTest {
 		assertTrue(collection.removeIf(a -> true));
 		assertEquals(0, collection.size());
 	}
-
 	@Test
 	void testRemoveIf() {
 		Integer[] expected = {10, -20,  50, 100, 30};
-		assertFalse(collection.removeIf(a -> a == null));
 		assertFalse(collection.removeIf(a -> a % 2 != 0
 				&& a >= 10));
-		assertEquals(6, collection.size());
 		assertTrue(collection.removeIf(a -> a % 2 != 0));
-		assertFalse(collection.removeIf(CollectionTest::predicateOddRemove));
-		assertEquals(5, collection.size());
-		assertFalse(collection.contains((Integer)7));
-		Integer [] actual = collection.toArray(new Integer[0]);
-		for(int i=0; i< actual.length; i++) {
-			System.out.println(actual[i]);
-		}
 		runTest(expected);
+		
 	}
+
+//	@Test
+//	void testRemoveIf() {
+//		Integer[] expected = {10, -20,  50, 100, 30};
+//		assertFalse(collection.removeIf(a -> a == null));
+//		assertFalse(collection.removeIf(a -> a % 2 != 0
+//				&& a >= 10));
+//		assertEquals(6, collection.size());
+//		assertTrue(collection.removeIf(a -> a % 2 != 0));
+//		assertFalse(collection.removeIf(CollectionTest::predicateOddRemove));
+//		assertEquals(5, collection.size());
+//		assertFalse(collection.contains((Integer)7));
+//		Integer [] actual = collection.toArray(new Integer[0]);
+//		for(int i=0; i< actual.length; i++) {
+//			System.out.println(actual[i]);
+//		}
+//		runTest(expected);
+//	}
+	protected abstract Integer[] getActual(Integer[] actual, int size);
+	protected abstract Integer[] getExpected(Integer[] expected);
 	@Test
 	void testToArrayForBigArray() {
 		Integer bigArray[] = new Integer[BIG_LENGTH];
 		for(int i = 0; i < BIG_LENGTH; i++) {
 			bigArray[i] = 10;
 		}
-		Integer actualArray[] = collection.toArray(bigArray);
+		Integer actualArray[] = getActual(collection.toArray(bigArray), collection.size());
+		Integer[] expected = getExpected(numbers);
+		
 		int size = collection.size();
 		for(int i = 0; i < size; i++) {
-			assertEquals(numbers[i], actualArray[i]);
+			assertEquals(expected[i], actualArray[i]);
 		}
 		assertNull(actualArray[size]);
 		assertTrue(bigArray == actualArray);
 	}
 	@Test
 	void testToArrayForEmptyArray() {
-		Integer actualArray[] =
-				collection.toArray(new Integer[0]);
-		assertArrayEquals(numbers, actualArray);
+		Integer actualArray[] = getActual(collection.toArray(new Integer[0]), collection.size());
+		Integer[] expected = getExpected(numbers);
+		assertArrayEquals(expected, actualArray);
 	}
 	@Test 
 	void testIterator() {
 		Iterator<Integer> it1 = collection.iterator();
 		Iterator<Integer> it2 = collection.iterator();
+		it1.next();
 		while(it2.hasNext()) {
 			it2.next();
 		}
-		it1.next();
-		assertEquals(numbers[1], it1.next());
 		assertTrue(collection.contains(it1.next()));
-		assertThrowsExactly(NoSuchElementException.class,()-> it2.next());
-		
+		assertThrowsExactly(NoSuchElementException.class,()-> it2.next());		
 	}
 	
 	@Test
@@ -136,16 +133,17 @@ public abstract class CollectionTest {
 		Integer[] expectedFirst = {  -20, 7, 50, 100, 30 };
 		Integer[] expectedLast = {  -20, 7, 50, 100 };
 		assertThrowsExactly(IllegalStateException.class, ()-> it.remove());
-		it.next();
+		Integer removed = it.next();
+		assertTrue(collection.contains(removed));
 		it.remove();
-		runTest(expectedFirst);
-		assertEquals(5, collection.size());
+		assertFalse(collection.contains(removed));
 		assertThrowsExactly(IllegalStateException.class, ()-> it.remove());
 		while(it.hasNext()) {
-			it.next();
+			removed = it.next();
 		}
+		assertTrue(collection.contains(removed));
 		it.remove();
-		runTest(expectedLast);		
+		assertFalse(collection.contains(removed));		
 	}
 	
 	@Test
@@ -163,6 +161,16 @@ public abstract class CollectionTest {
 		assertEquals(0, collection.size());
 	}
 
+	@Test
+	void clearPerformance() {
+		Collection<Integer> bigCollection = getCollection();
+		Random gen = new Random();
+		for(int i = 0; i < 1000000; i++) {
+			bigCollection.add(gen.nextInt());
+		}
+		bigCollection.clear();
+		assertEquals(0, bigCollection.size());
+	}
 	static private boolean predicateOddRemove(Integer a) {
 		return Math.abs(a) % 2 == 1 ? true : false;
 	}

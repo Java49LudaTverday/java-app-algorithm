@@ -2,6 +2,8 @@ package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
 //import java.util.Arrays;
 //
 //import org.junit.jupiter.api.BeforeEach;
@@ -143,6 +145,14 @@ abstract class ListTest extends CollectionTest{
 		}
 		bigList.clear();
 		
+	}
+	@Override
+	protected Integer[] getActual(Integer[] array, int size) {
+		return array;
+	}
+	@Override
+	protected Integer[] getExpected (Integer[] array) {
+		return array;		
 	}
 	
 }

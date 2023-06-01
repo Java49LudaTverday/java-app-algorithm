@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class TreeSet<T> implements Set<T> {
+public class TreeSet<T> implements SortedSet<T> {
 	private static class Node<T> {
 		T obj;
 		Node<T> parent;
@@ -12,7 +12,13 @@ public class TreeSet<T> implements Set<T> {
 		Node<T> right;
 		Node(T obj) {
 			this.obj = obj;
-		}		
+		}	
+		void setNulls() {
+			parent = null;
+			right = null;
+			left = null;
+			obj = null;
+		}
 	}
 	private Node<T> root;
 	private Comparator<T> comp;
@@ -20,7 +26,7 @@ public class TreeSet<T> implements Set<T> {
 	
 	@SuppressWarnings("unchecked")
 	public TreeSet () {
-		this.comp =(Comparator<T> )Comparator.naturalOrder();
+		this((Comparator<T> )Comparator.naturalOrder());
 	}
 	public TreeSet (Comparator<T> comparator) {
 		this.comp = comparator;
@@ -160,10 +166,10 @@ public class TreeSet<T> implements Set<T> {
 		Node<T> left = node.left;
 		Node<T> right = node.right;
 		if(left != null) {			
-			root.left = null;
+			root.left.parent = null;
 			root = left;
 		} else if (right != null) {
-			root.right = null;
+			root.right.parent = null;
 			root = right;
 		} else {
 			root = null;
@@ -186,7 +192,8 @@ public class TreeSet<T> implements Set<T> {
 			parent = null;
 		} else {
 			removeRootNode(node);
-		}	
+		}
+		node.setNulls();
 	}
 
 	private void removeJunctionNode(Node<T> node) {
@@ -213,6 +220,26 @@ public class TreeSet<T> implements Set<T> {
 	public void toMyString() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public T first() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public T last() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public T ceiling() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public T floor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
