@@ -211,16 +211,25 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T first() {
+		if(size == 0) {
+			throw new NoSuchElementException();
+		}
 		Node<T> current = getLeast(root);
-		return current != null ? current.obj : null;
+		return current.obj ;
 	}
 	@Override
 	public T last() {
+		if(size == 0) {
+			throw new NoSuchElementException();
+		}
 		Node<T> current = getMostNodeFrom(root);		
-		return current != null ? current.obj : null;
+		return current.obj ;
 	}
 	@Override
 	public T ceiling(T key) {
+		if(key == null) {
+			throw new NullPointerException();
+		}
 		Node<T> current = getNodeParent(key);
 		T res = null;
 		if(current != null && comp.compare(current.obj, key) >= 0) {
@@ -230,6 +239,9 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T floor(T key) {
+		if(key == null) {
+			throw new NullPointerException();
+		}
 		Node<T> current = getNodeParent(key);
 		T res = null;
 		if(current != null && comp.compare(current.obj, key) <= 0) {
