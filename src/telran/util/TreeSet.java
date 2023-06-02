@@ -162,49 +162,37 @@ public class TreeSet<T> implements SortedSet<T> {
 		size--;
 	}
 
-	private void removeRootNode(Node<T> node) {
-		Node<T> left = node.left;
-		Node<T> right = node.right;
-		if(left != null) {			
-			root.left.parent = null;
-			root = left;
-		} else if (right != null) {
-			root.right.parent = null;
-			root = right;
-		} else {
-			root = null;
-		}			
-	}
-
 	private void removeNotJunction(Node<T> node) {
 		Node<T> parent = node.parent;
 		Node<T> curRef = node.left == null ? node.right : node.left;
-		if(parent != null) {
-			int compRes = comp.compare(parent.obj, node.obj);
-			if(curRef != null) {
-				curRef.parent = parent;	
-			}
-			if(compRes > 0 || compRes == 0) {
+		if (parent == null) {
+			root = curRef;
+		} else {
+			if(node == parent.left) {
 				parent.left = curRef;
 			} else {
 				parent.right = curRef;
 			}
-			parent = null;
-		} else {
-			removeRootNode(node);
+			
+		}
+		if (curRef != null) {
+			curRef.parent = parent;
 		}
 		node.setNulls();
 	}
 
 	private void removeJunctionNode(Node<T> node) {
-		Node<T> current = node.left;
-		while(current.right != null) {
-			current = current.right;
-		}
-		node.obj = current.obj;
-		removeNotJunction(current);
+		Node<T> substitute = getMostNodeFrom(node.left);
+		node.obj = substitute.obj;
+		removeNotJunction(substitute);
 	}
 
+	private Node<T> getMostNodeFrom(Node<T> node) {
+		while(node.right != null) {
+			node = node.right;
+		}
+		return node;
+	}
 	@Override
 	public boolean contains(T pattern) {
 		
@@ -223,23 +211,31 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T first() {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> current = getLeast(root);
+		return current != null ? current.obj : null;
 	}
 	@Override
 	public T last() {
-		// TODO Auto-generated method stub
-		return null;
+		Node<T> current = getMostNodeFrom(root);		
+		return current != null ? current.obj : null;
 	}
 	@Override
-	public T ceiling() {
-		// TODO Auto-generated method stub
-		return null;
+	public T ceiling(T key) {
+		Node<T> current = getNodeParent(key);
+		T res = null;
+		if(current != null && comp.compare(current.obj, key) >= 0) {
+			res = current.obj;
+		}
+		return res;
 	}
 	@Override
-	public T floor() {
-		// TODO Auto-generated method stub
-		return null;
+	public T floor(T key) {
+		Node<T> current = getNodeParent(key);
+		T res = null;
+		if(current != null && comp.compare(current.obj, key) <= 0) {
+			res = current.obj;
+		}
+		return res;
 	}
 
 }
