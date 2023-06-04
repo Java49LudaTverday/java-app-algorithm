@@ -100,6 +100,13 @@ public class TreeSet<T> implements SortedSet<T> {
 		}
 		return current.parent;
 	}
+	
+	private Node<T> getLeastParent(Node<T> current) {
+		while(current.parent != null && current == current.parent.left) {
+			current = current.parent;
+		}
+		return current.parent;
+	}
 	private Node<T> getLeast(Node<T> node) {
 		Node<T> current = node;
 		while(current.left != null) {
@@ -211,45 +218,65 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T first() {
-		if(size == 0) {
-			throw new NoSuchElementException();
-		}
+		/* V.R.
+		 * 1. What will be happened in case of empty container?
+		 * Due to JavaDoc exception NoSuchElementException 
+		 * has to be thrown.
+		 * 2. (current != null) looks redundant 
+		 */
 		Node<T> current = getLeast(root);
-		return current.obj ;
+		return current != null ? current.obj : null;
 	}
 	@Override
 	public T last() {
-		if(size == 0) {
-			throw new NoSuchElementException();
-		}
+		/* V.R.
+		 * 1. What will be happened in case of empty container?
+		 * Due to JavaDoc exception NoSuchElementException 
+		 * has to be thrown.
+		 * 2. (current != null) looks redundant 
+		 */
 		Node<T> current = getMostNodeFrom(root);		
-		return current.obj ;
+		return current != null ? current.obj : null;
 	}
 	@Override
 	public T ceiling(T key) {
-		if(key == null) {
-			throw new NullPointerException();
+//		if(key==null) {
+//			throw new NullPointerException("ceiling()");
+//		}
+//		Node<T> current = getNodeParent(key);
+//		T res = null;
+//		if(current != null && comp.compare(current.obj, key) >= 0) {
+//			res = current.obj;
+//		}
+//		return res;
+		Node<T> currentNode = getNodeParent(key);
+		T result = null;
+		if(currentNode != null) {
+			if(comp.compare(currentNode.obj, key) < 0) {
+				currentNode = getGreaterParent(currentNode);
+			}
+			result = currentNode != null ? currentNode.obj : null;
 		}
-		Node<T> current = getNodeParent(key);
-		T res = null;
-		if(current != null && comp.compare(current.obj, key) >= 0) {
-			res = current.obj;
-		}
-		return res;
+		return result;
 	}
 	@Override
 	public T floor(T key) {
-		if(key == null) {
-			throw new NullPointerException();
+//		Node<T> current = getNodeParent(key);
+//		T res = null;
+//		if(current != null && comp.compare(current.obj, key) <= 0) {
+//			res = current.obj;
+//		}
+//		return res;
+		Node<T> currentNode = getNodeParent(key);
+		T result = null;
+		if(currentNode != null) {
+			if(comp.compare(currentNode.obj, key) > 0) {
+				currentNode = getLeastParent(currentNode);
+			}
+			result = currentNode != null ? currentNode.obj : null;
 		}
-		Node<T> current = getNodeParent(key);
-		T res = null;
-		if(current != null && comp.compare(current.obj, key) <= 0) {
-			res = current.obj;
-		}
-		return res;
+		return result;
 	}
-
 }
 
 
