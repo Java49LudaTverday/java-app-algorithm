@@ -100,6 +100,13 @@ public class TreeSet<T> implements SortedSet<T> {
 		}
 		return current.parent;
 	}
+	
+	private Node<T> getLeastParent(Node<T> current) {
+		while(current.parent != null && current == current.parent.left) {
+			current = current.parent;
+		}
+		return current.parent;
+	}
 	private Node<T> getLeast(Node<T> node) {
 		Node<T> current = node;
 		while(current.left != null) {
@@ -211,45 +218,83 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T first() {
-		if(size == 0) {
+		if(root == null) {
 			throw new NoSuchElementException();
 		}
 		Node<T> current = getLeast(root);
-		return current.obj ;
+		return current.obj;
 	}
 	@Override
 	public T last() {
-		if(size == 0) {
-			throw new NoSuchElementException();
-		}
-		Node<T> current = getMostNodeFrom(root);		
-		return current.obj ;
+		if(root == null) {
+				throw new NoSuchElementException();
+			}
+		Node<T>	current = getMostNodeFrom(root);		
+		return current.obj;
 	}
 	@Override
 	public T ceiling(T key) {
-		if(key == null) {
-			throw new NullPointerException();
+//		if(key==null) {
+//			throw new NullPointerException("ceiling()");
+//		}
+//		Node<T> current = getNodeParent(key);
+//		T res = null;
+//		if(current != null && comp.compare(current.obj, key) >= 0) {
+//			res = current.obj;
+//		}
+//		return res;
+		Node<T> currentNode = getNodeParent(key);
+		T result = null;
+		if(currentNode != null) {
+			if(comp.compare(currentNode.obj, key) < 0) {
+				currentNode = getGreaterParent(currentNode);
+			}
+			result = currentNode != null ? currentNode.obj : null;
 		}
-		Node<T> current = getNodeParent(key);
-		T res = null;
-		if(current != null && comp.compare(current.obj, key) >= 0) {
-			res = current.obj;
-		}
-		return res;
+		return result;
 	}
 	@Override
 	public T floor(T key) {
-		if(key == null) {
-			throw new NullPointerException();
+//		Node<T> current = getNodeParent(key);
+//		T res = null;
+//		if(current != null && comp.compare(current.obj, key) <= 0) {
+//			res = current.obj;
+//		}
+//		return res;
+		Node<T> currentNode = getNodeParent(key);
+		T result = null;
+		if(currentNode != null) {
+			if(comp.compare(currentNode.obj, key) > 0) {
+				currentNode = getLeastParent(currentNode);
+			}
+			result = currentNode != null ? currentNode.obj : null;
 		}
-		Node<T> current = getNodeParent(key);
-		T res = null;
-		if(current != null && comp.compare(current.obj, key) <= 0) {
-			res = current.obj;
-		}
-		return res;
+		return result;
 	}
-
+	// Version of Yuri:
+//	@Override
+//	public T floor(T element) {
+//		
+//		return floorCeiling(element, true);
+//	}
+//	@Override
+//	public T ceiling(T element) {
+//		
+//		return floorCeiling(element, false);
+//	}
+//	private T floorCeiling(T pattern, boolean isFloor) {
+//		T res = null;
+//		int compRes = 0;
+//		Node<T> current = root;
+//		while (current != null && (compRes = comp.compare(pattern, current.obj)) != 0) {
+//			if ((compRes < 0 && !isFloor) || (compRes > 0 && isFloor) ) {
+//				res = current.obj;
+//			} 
+//			current = compRes < 0 ? current.left : current.right;
+//		}
+//		return current == null ? res : current.obj;
+//		
+//	}
 }
 
 
