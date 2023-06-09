@@ -165,11 +165,26 @@ public abstract class CollectionTest {
 	void clearPerformance() {
 		Collection<Integer> bigCollection = getCollection();
 		Random gen = new Random();
-		for(int i = 0; i < 1000000; i++) {
-			bigCollection.add(gen.nextInt());
-		}
+//		for(int i = 0; i < 1000000; i++) {
+//			bigCollection.add(gen.nextInt());
+//		}
+		int[] array = getRandomArray(1_000_000);
+		fillCollection(bigCollection, array);
 		bigCollection.clear();
 		assertEquals(0, bigCollection.size());
+	}
+	protected int[] getRandomArray(int length) {
+		Random gen = new Random();
+		int[] res = new int[length];
+		for(int i = 0; i < length; i++) {
+			res[i] = gen.nextInt();
+		}
+		return res;
+	}
+	protected void fillCollection(Collection<Integer> collection, int[] array) {
+		for(int num: array) {
+			collection.add(num);
+		}
 	}
 	static private boolean predicateOddRemove(Integer a) {
 		return Math.abs(a) % 2 == 1 ? true : false;

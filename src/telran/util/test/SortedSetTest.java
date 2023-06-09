@@ -1,16 +1,21 @@
 package telran.util.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-//import java.util.SortedSet;
 import telran.util.SortedSet;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
 
 import telran.util.Set;
 
 public abstract class SortedSetTest extends SetTest {
-
+	SortedSet<Integer> sortedSet;
+	@BeforeEach
+	@Override
+	void setUp() {
+		super.setUp();
+		sortedSet = (SortedSet<Integer>) set;
+	}
 	@Override
 	protected Integer[] getActual (Integer[] array, int size) {
 		System.out.println("Sorted test");
@@ -18,17 +23,17 @@ public abstract class SortedSetTest extends SetTest {
 	}
 	@Test
 	void firstTest() {
-		SortedSet<Integer> sortedSet = (SortedSet<Integer>)set;
+		//SortedSet<Integer> sortedSet = (SortedSet<Integer>)set;
 		assertEquals(-20, sortedSet.first());		
 	}
 	@Test
 	void lastTest() {
-		SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
+		//SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
 		assertEquals(100, sortedSet.last());
 	}
 	@Test
 	void ceilingTest() {
-		SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
+		//SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
 		assertThrowsExactly(NullPointerException.class, () -> sortedSet.ceiling(null));		
 		assertEquals(-20, sortedSet.ceiling(-25));
 		assertEquals(7, sortedSet.ceiling(7));
@@ -42,7 +47,7 @@ public abstract class SortedSetTest extends SetTest {
 	}
 	@Test
 	void floorTest() {
-		SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
+		//SortedSet<Integer> sortedSet = (SortedSet<Integer>) set;
 		assertThrowsExactly(NullPointerException.class, () -> sortedSet.floor(null));		
 		assertEquals(50, sortedSet.floor(70));
 		assertEquals(30, sortedSet.floor(40));

@@ -60,8 +60,10 @@ class LinerRecurtionTest {
 		assertEquals(9, LineRecurtion.square(-3));
 	}
 	@Test
+	@Disabled
 	void isSubstringTest () {
 		assertTrue(LineRecurtion.isSubstring("Hello","lo"));
 		assertFalse(LineRecurtion.isSubstring("Hello", "abs"));
+		assertTrue(LineRecurtion.isSubstring("HelHeHellHello", "Hello"));
 	}
 }

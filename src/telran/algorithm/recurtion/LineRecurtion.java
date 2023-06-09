@@ -26,18 +26,31 @@ public class LineRecurtion {
 		// Limitations:
 		// 1.no cycles
 		// 2. only + / or - for arithmetic operations
-		long res = num;
-		if (num < 0) {
-			num = -num;
+//		long res = num;
+//		if (num < 0) {
+//			num = -num;
+//		}
+//		if (pow == 1) {
+//			res = num;
+//		} else {
+//			res = sumPower(res, num, pow);
+//			if (res < 0 && ((pow & 1) == 0)) {
+//				res = -res;
+//			}
+//			res = res < 0 ? res + num : res - num;
+//		}
+		
+		long res = 1;
+		if( pow > 0) {
+			res = multiply(num, power(num , pow - 1));
 		}
-		if (pow == 1) {
-			res = num;
-		} else {
-			res = sumPower(res, num, pow);
-			if (res < 0 && ((pow & 1) == 0)) {
-				res = -res;
-			}
-			res = res < 0 ? res + num : res - num;
+		return res;
+	}
+
+	private static long multiply(int a, long b) {
+		long res = 0;
+		if(b != 0) {
+			res = b < 0 ? multiply(-a, -b) : a + multiply(a, b-1);
 		}
 		return res;
 	}
@@ -94,17 +107,22 @@ public class LineRecurtion {
 		// 2. only plus (+) arithmetic
 		// 3. no additional functions
 		// 4. no static fields
-		if (x < 0) {
-			x = -x;
-		}
-		long res = x;
-		if (x != 0) {
-			res += square(x - 1) + x - 1;
-		}
+//		if (x < 0) {
+//			x = -x;
+//		}
+//		long res = x;
+//		if (x != 0) {
+//			res += square(x - 1) + x - 1;
+//		}
+		long res = 0;
+		if(x != 0) {
+			// x^2 = (x - 1)^2 + 2x - 1;
+			res = x < 0 ? square(-x) : square(x - 1) + x + x - 1 ;
+		}		
 		return res;
 	}
 	
-	public static boolean isSubstring (String string, String substring) {
+	public static boolean isSubstring (String string, String substr) {
 		//TODO write function
 		// returns true if a given 'substring' is indeed the
 		//substring of a given `string`
@@ -114,7 +132,24 @@ public class LineRecurtion {
 		int length();
 		2. No cycles;*/
 		//
+		boolean res = false;
+		if(string.length() >= substr.length()) {
+			res = isEqual(string, substr)? true : isSubstring(string.substring(1), substr);
+		}
+		
+		return res;
+	}
+
+	private static boolean isEqual(String string, String substr) {
+		boolean res = false;
+		if(substr.length() == 0) {
+			res = true;
+		} else if (string.charAt(0) == substr.charAt(0)) {
+			res = isEqual(string.substring(1), substr.substring(1)); 
+		}
 		return false;
 	}
+
+	
 
 }

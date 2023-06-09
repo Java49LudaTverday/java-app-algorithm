@@ -23,7 +23,21 @@ public class TreeSet<T> implements SortedSet<T> {
 	private Node<T> root;
 	private Comparator<T> comp;
 	private int size;
+	private int spacesPerLevel = 2;
+	private int initialLevel = 0;
 	
+	public int getInitialLevel() {
+		return initialLevel;
+	}
+	public void setInitialLevel(int initialLevel) {
+		this.initialLevel = initialLevel;
+	}
+	public int getSpacesPerLevel() {
+		return spacesPerLevel;
+	}
+	public void setSpacesPerLevel(int spacesPerLevel) {
+		this.spacesPerLevel = spacesPerLevel;
+	}
 	@SuppressWarnings("unchecked")
 	public TreeSet () {
 		this((Comparator<T> )Comparator.naturalOrder());
@@ -234,15 +248,6 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T ceiling(T key) {
-//		if(key==null) {
-//			throw new NullPointerException("ceiling()");
-//		}
-//		Node<T> current = getNodeParent(key);
-//		T res = null;
-//		if(current != null && comp.compare(current.obj, key) >= 0) {
-//			res = current.obj;
-//		}
-//		return res;
 		Node<T> currentNode = getNodeParent(key);
 		T result = null;
 		if(currentNode != null) {
@@ -255,12 +260,6 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 	@Override
 	public T floor(T key) {
-//		Node<T> current = getNodeParent(key);
-//		T res = null;
-//		if(current != null && comp.compare(current.obj, key) <= 0) {
-//			res = current.obj;
-//		}
-//		return res;
 		Node<T> currentNode = getNodeParent(key);
 		T result = null;
 		if(currentNode != null) {
@@ -270,6 +269,9 @@ public class TreeSet<T> implements SortedSet<T> {
 			result = currentNode != null ? currentNode.obj : null;
 		}
 		return result;
+	}
+	public void displayRotated() {
+		displayRotated(root, initialLevel  );
 	}
 	// Version of Yuri:
 //	@Override
@@ -295,6 +297,86 @@ public class TreeSet<T> implements SortedSet<T> {
 //		return current == null ? res : current.obj;
 //		
 //	}
+	private void displayRotated(Node<T> root, int level) {
+		if(root != null) {
+			displayRotated(root.right, level + 1);
+			displayRoot(root, level);
+			displayRotated(root.left, level + 1);
+		}
+		
+	}
+	private void displayRoot(Node<T> root, int level) {
+		System.out.print(" ".repeat(level * spacesPerLevel) );
+		System.out.println(root.obj);
+		
+	}
+	public int width() {
+		return width(root);
+	}
+	private int width(Node<T> root) {
+		int res = 0;
+		if(root != null) {			
+			res = root.left == null && root.right == null ? 1 :
+				width(root.right) + width(root.left);
+		}
+		return res;
+	}
+	public int height () {
+		return height(root);
+	}
+	private int height(Node<T> root) {
+		int res = 0;
+		if(root != null) {
+			int heightRight = height(root.right);
+			int heightLeft = height(root.left);
+			res = Math.max(heightRight, heightLeft) + 1;
+		}
+		return res;
+	}
+	public void balance() {
+		Node<T>[] array = getSortedNodes();
+		root = balance(array, 0, array.length - 1, null);
+		
+	}
+	private Node<T> balance(Node<T>[] array, int left, int right, Node<T> parent) {
+		Node<T> root = null;
+		if (left <= right) {
+			int rootIndex = (left + right) / 2;
+			root = array[rootIndex];
+			root.parent = parent;
+			root.left = balance(array, left, rootIndex - 1, root);
+			root.right = balance(array, rootIndex + 1, right, root);
+		}
+		return root;
+		
+		
+	}
+	private Node<T>[] getSortedNodes() {
+		@SuppressWarnings("unchecked")
+		Node<T>[] res = new Node[size];
+		if(root != null) {
+		Node<T> current = getLeast(root);
+		for(int i = 0; i < size; i++) {
+			res[i] = current;
+			current = getCurrent(current);
+		}
+		}
+		
+		return res;
+	}
+	public void inversion() {
+		invertion(root);
+		comp = comp.reversed();
+		
+	}
+	private Node<T> invertion(Node<T> root) {
+		if(root != null) {
+			Node<T> helper = root.right;
+			root.right = invertion(root.left);
+			root.left = invertion(helper);
+		}
+		return root;
+	}
 }
 
 
