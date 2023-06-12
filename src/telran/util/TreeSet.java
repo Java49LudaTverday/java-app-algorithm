@@ -367,6 +367,7 @@ public class TreeSet<T> implements SortedSet<T> {
 	public void inversion() {
 		invertion(root);
 		comp = comp.reversed();
+	
 		
 	}
 	private Node<T> invertion(Node<T> root) {

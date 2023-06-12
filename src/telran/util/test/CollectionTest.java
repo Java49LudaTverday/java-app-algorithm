@@ -74,23 +74,6 @@ public abstract class CollectionTest {
 		
 	}
 
-//	@Test
-//	void testRemoveIf() {
-//		Integer[] expected = {10, -20,  50, 100, 30};
-//		assertFalse(collection.removeIf(a -> a == null));
-//		assertFalse(collection.removeIf(a -> a % 2 != 0
-//				&& a >= 10));
-//		assertEquals(6, collection.size());
-//		assertTrue(collection.removeIf(a -> a % 2 != 0));
-//		assertFalse(collection.removeIf(CollectionTest::predicateOddRemove));
-//		assertEquals(5, collection.size());
-//		assertFalse(collection.contains((Integer)7));
-//		Integer [] actual = collection.toArray(new Integer[0]);
-//		for(int i=0; i< actual.length; i++) {
-//			System.out.println(actual[i]);
-//		}
-//		runTest(expected);
-//	}
 	protected abstract Integer[] getActual(Integer[] actual, int size);
 	protected abstract Integer[] getExpected(Integer[] expected);
 	@Test
@@ -173,6 +156,19 @@ public abstract class CollectionTest {
 		bigCollection.clear();
 		assertEquals(0, bigCollection.size());
 	}
+	@Test
+	void sumEvenNumbers() {
+		assertEquals(170,collection.stream().filter(a-> a%2==0)
+				.mapToInt(n -> n).sum());
+		
+	}
+	@Test
+	void positiveEvenNumbersTest() {
+		int[] expected = {10, 30, 50, 100};
+		assertArrayEquals(expected, collection.stream().filter( a -> a > 0 && a % 2 == 0).sorted()
+				.mapToInt(a -> a).toArray());
+	}
+	
 	protected int[] getRandomArray(int length) {
 		Random gen = new Random();
 		int[] res = new int[length];

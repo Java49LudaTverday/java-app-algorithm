@@ -51,8 +51,8 @@ public class TreeSetTest extends SortedSetTest {
 	}
 	@Test
 	void balanceTestFromSorted() {
-		int height = 20;
-		int nNumbers =  (int) Math.pow(2, height);
+		int height = 22;
+		int nNumbers =  (int) Math.pow(2, height); // 1 << height
 		int [] array = new int[nNumbers - 1];
 		for(int i = 0; i < array.length; i++) {
 			array[i] = i;
@@ -66,14 +66,12 @@ public class TreeSetTest extends SortedSetTest {
 		assertEquals(nNumbers / 2, treeBalanced.width());
 	}
 	
-	private void balanceOrder(int[] array) {
-		// TODO Auto-generated method stub	
+	private void balanceOrder(int[] array) {	
 		//reorder array such that adding to tree will get a balanced tree
 		ArrayList<Integer> resArray = new ArrayList<>();		
 		balanceOrder(array, resArray,  0, array.length - 1);
-		Integer[] arr = resArray.toArray(new Integer[array.length]);
 		int index = 0;
-		for(int num : arr) {
+		for(int num : resArray) {
 			array[index++] = num;
 		}
 	}
