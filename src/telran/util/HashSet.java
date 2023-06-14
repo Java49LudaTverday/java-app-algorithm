@@ -171,6 +171,23 @@ public class HashSet<T> implements Set<T> {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public T get(T pattern) {
+		T res = null;
+		int index = getHashTableIndex(pattern);
+		if(hashTable[index] != null) {
+			List<T> list = hashTable[index];
+			Iterator<T> it = list.iterator();
+			while(it.hasNext() && res == null) {
+				T obj = it.next();
+				if(obj.equals(pattern)) {
+					res = obj;
+				}
+			}
+			return res;
+		}
+		return null;
+	}
 
 }
 

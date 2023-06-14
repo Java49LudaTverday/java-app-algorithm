@@ -14,10 +14,11 @@ public class PrimitiveStreams {
 	}
 	//Version 1:
 	public static int[] shuffle (int[] array) {
-		return new Random().ints(0, array.length).distinct()
+		return  new Random().ints(0, array.length).distinct()
 				.limit(array.length).map(a -> array[a])				
 				.toArray();
 	}
+	
 	//Version 2:
 //	public static int[] shuffle (int[] array) {
 //		ArrayList<Integer> arrayInt = new ArrayList<>();
