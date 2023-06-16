@@ -3,25 +3,7 @@ package telran.util;
 import java.util.Objects;
 
 public interface Map<K, V> {
-	static class Entry<K, V> implements Comparable<Entry<K, V>>{
-		private K key;// not changing
-		private V value;		
-		public Entry(K key, V value) {
-			super();
-			this.key = key;
-			this.value = value;
-		}
-		public V getValue() {
-			return value;
-		}
-
-		public void setValue(V value) {
-			this.value = value;
-		}
-
-		public K getKey() {
-			return key;
-		}
+	static class  Entry<K, V> implements Comparable<Entry<K,V>>{
 		@Override
 		public int hashCode() {
 			return Objects.hash(key);
@@ -37,7 +19,22 @@ public interface Map<K, V> {
 			Entry other = (Entry) obj;
 			return Objects.equals(key, other.key);
 		}
-		@SuppressWarnings("unchecked")
+		public V getValue() {
+			return value;
+		}
+		public void setValue(V value) {
+			this.value = value;
+		}
+		public K getKey() {
+			return key;
+		}
+		public Entry(K key, V value) {
+			super();
+			this.key = key;
+			this.value = value;
+		}
+		private K key;
+		private V value;
 		@Override
 		public int compareTo(Entry<K, V> o) {
 			
@@ -48,7 +45,7 @@ public interface Map<K, V> {
 	V get(K key);
 	default V getOrDefault(K key, V defaultValue) {
 		V res = get(key);
-		if(res == null) {
+		if (res == null) {
 			res = defaultValue;
 		}
 		return res;
@@ -56,15 +53,15 @@ public interface Map<K, V> {
 	V put(K key, V value);
 	default V putIfAbsent(K key, V value) {
 		V res = get(key);
-		if(res == null) {
+		if (res == null) {
 			put(key, value);
 		}
 		return res;
 	}
 	boolean containsKey(K key);
-    boolean containsValue(V value);
-    Set<K> keySet();
-    Collection<V> values();
-    Set<Entry<K, V>> entrySet();
-    V remove(K key);
+	boolean containsValue(V value);
+	Set<K> keySet();
+	Collection<V> values();
+	Set<Entry<K, V>> entrySet();
+	V remove(K key);
 }

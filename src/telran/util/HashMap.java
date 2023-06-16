@@ -11,4 +11,10 @@ public class HashMap<K, V> extends AbstractMap<K, V> {
 		return new HashSet<>();
 	}
 
+	@Override
+	protected Collection<V> getCollectionValue() {
+		
+		return new ArrayList<>();
+	}
+
 }

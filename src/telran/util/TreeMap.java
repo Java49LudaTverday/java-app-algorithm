@@ -8,5 +8,9 @@ public class TreeMap<K, V> extends AbstractMap<K, V> {
 	protected Set<K> getKeySet() {
 		return new TreeSet<>();
 	}
+	@Override
+	protected Collection<V> getCollectionValue() {		
+		return new ArrayList<>();
+	}
 
 }
