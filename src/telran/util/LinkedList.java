@@ -35,7 +35,7 @@ public class LinkedList<T> implements List<T> {
 			if(!flNext) {
 			throw new IllegalStateException();
 			}
-			Node<T> removedNode = current != null? current.prev: tail;
+			Node<T> removedNode = current != null ? current.prev: tail;
 			removeNode(removedNode);
 			flNext = false;
 		}
@@ -149,7 +149,7 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public void toMyString() {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 
 	}
 
@@ -231,6 +231,7 @@ public class LinkedList<T> implements List<T> {
 
 	private void removeNodeTail() {
 		Node<T> newTail = tail.prev;
+		//q
 		if (newTail != null) {
 			newTail.next = null;
 		}

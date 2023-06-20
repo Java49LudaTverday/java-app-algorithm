@@ -127,7 +127,6 @@ public class HashSet<T> implements Set<T> {
 		int index = getHashTableIndex(pattern);
 		if (hashTable[index] != null) {
 			res = hashTable[index].remove(pattern);
-			System.out.println("Res"+res);
 			if (res) {
 				size--;
 			}
@@ -144,7 +143,7 @@ public class HashSet<T> implements Set<T> {
 		return hashTable[index] != null && hashTable[index].contains(pattern);
 	}
 //	@Override
-	//FIXME method should be removed after writing iterator
+	// method should be removed after writing iterator
 //	public T[] toArray(T[] ar) {
 //		int size = size();
 //		if (ar.length < size) {
@@ -168,7 +167,7 @@ public class HashSet<T> implements Set<T> {
 //	}
 	@Override
 	public void toMyString() {
-		// TODO Auto-generated method stub
+		//  Auto-generated method stub
 		
 	}
 	@Override

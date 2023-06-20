@@ -18,7 +18,7 @@ public abstract class SortedSetTest extends SetTest {
 	}
 	@Override
 	protected Integer[] getActual (Integer[] array, int size) {
-		System.out.println("Sorted test");
+		//System.out.println("Sorted test");
 		return array;
 	}
 	@Test

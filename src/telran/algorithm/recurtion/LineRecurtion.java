@@ -22,7 +22,7 @@ public class LineRecurtion {
 //			res = a * power(a, b - 1);// a^b = a * a^b-1
 //		}
 //		return res;
-		// TODO HW#18
+		//  HW#18
 		// Limitations:
 		// 1.no cycles
 		// 2. only + / or - for arithmetic operations
@@ -101,7 +101,6 @@ public class LineRecurtion {
 
 	public static long square(int x) {
 		// x any number
-		// TODO
 		// Limitations:
 		// 1. no cycles
 		// 2. only plus (+) arithmetic
@@ -123,7 +122,7 @@ public class LineRecurtion {
 	}
 	
 	public static boolean isSubstring (String string, String substr) {
-		//TODO write function
+		// write function
 		// returns true if a given 'substring' is indeed the
 		//substring of a given `string`
 		/* Challenges: 1. To apply only following methods

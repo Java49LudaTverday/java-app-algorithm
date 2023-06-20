@@ -15,10 +15,10 @@ public interface Collection<T> extends Iterable<T> {
 		int oldSize = size();
 		Iterator<T> it = iterator();
 		while(it.hasNext()) {
-			T obj = it.next();
-			if(predicate.test(obj)) {
+			T obj = it.next();	
+			if(predicate.test(obj)) {				
 				it.remove();
-			}
+			}			
 		}
 		return oldSize > size();
 	};

@@ -96,9 +96,12 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 	//returns the previous value associated with key, 
 	//or null if there was no mapping for key.
 	public V remove(K key) {
-		if(key == null) {
-			 throw new NullPointerException();
-		}
+		//key can`t be null
+		// if key == null atomatic it will be null pointer exception
+//		if(key == null) {
+//			 throw new NullPointerException();
+//		}
+		
 		Entry<K, V> entry = set.get(new Entry<>(key, null));
 		V value = null;
 		if(entry != null) {

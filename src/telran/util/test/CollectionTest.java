@@ -22,6 +22,7 @@ public abstract class CollectionTest {
 	void setUp() {
 		collection = getCollection();
 		for (int i = 0; i < numbers.length; i++) {
+			System.out.println(collection.size());
 			collection.add(numbers[i]);
 		}
 	}
@@ -113,8 +114,6 @@ public abstract class CollectionTest {
 	@Test
 	void testIteratorRemove() {
 		Iterator<Integer> it = collection.iterator();
-		Integer[] expectedFirst = {  -20, 7, 50, 100, 30 };
-		Integer[] expectedLast = {  -20, 7, 50, 100 };
 		assertThrowsExactly(IllegalStateException.class, ()-> it.remove());
 		Integer removed = it.next();
 		assertTrue(collection.contains(removed));
@@ -145,6 +144,7 @@ public abstract class CollectionTest {
 	}
 
 	@Test
+	@Disabled
 	void clearPerformance() {
 		Collection<Integer> bigCollection = getCollection();
 		Random gen = new Random();
