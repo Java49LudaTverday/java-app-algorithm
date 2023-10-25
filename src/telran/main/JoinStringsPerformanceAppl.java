@@ -7,7 +7,8 @@ public class JoinStringsPerformanceAppl {
 
 	private static final int N_STRINGS = 1000;
 	private static final int N_RUNS = 10000;
-
+//FIXME rewrite the code by applying class reflection
+	// to get rid of  JoinString implementation
 	public static void main(String[] args) {
 		String[] strings = getBigArrayStrings(N_STRINGS);
 		JoinStrings joinStringsBuilder = new JoinStringsBuilderImpl();
